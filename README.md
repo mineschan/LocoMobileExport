@@ -23,16 +23,17 @@ SCRIPT="PATH_TO_THE_SCRIPT"
 $SCRIPT ios --key $LOCO_API_KEY --map 'en=en' --map 'zh=zh-Hant' --output "$PROJECT_DIR/PROJECT_DIR"
 ```
 
+## Options
+
 Option | Explanation
 ------- | -------
 {Platform} | `ios` or `android`
 --key | Provide the project API Key from localise.biz
---output | Specific the path of where the `.lproj` folder is e.g. `--output "$PROJEC8T_DIR/MyApp"`
---map | How the language name map from localise export and project lang code, e.g. `en_US` on localise.biz, `en.lproj` in the xcode project, can be map with `--map 'en_US=en'`
+--output | Specific the path of where the `.lproj` folder is e.g. `--output "$PROJECT_DIR/MyApp"`
+--map | How the language name map from localise export and project lang code, e.g. `en_US` on localise.biz, `en.lproj` in the xcode project, can be map with `--map 'en_US=en'`, can map as many as you want to meet your project setup.
 
 4. Build the project and see the magic!
 
-## Options to config
 
 
 
