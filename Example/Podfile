@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'LocoMobileExport_Example' do
+  pod 'LocoMobileExport', :path => '../'
+
+  target 'LocoMobileExport_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

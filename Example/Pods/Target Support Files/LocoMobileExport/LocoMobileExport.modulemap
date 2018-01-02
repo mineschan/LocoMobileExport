@@ -1,0 +1,6 @@
+framework module LocoMobileExport {
+  umbrella header "LocoMobileExport-umbrella.h"
+
+  export *
+  module * { export * }
+}

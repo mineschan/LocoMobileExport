@@ -13,6 +13,7 @@ DOWNLOAD_FILE_NAME=tmp_localise_export
 OUTPUT_PATH=
 FORCE_COPY=false
 MAPS=()
+
 #colors for echo
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -20,6 +21,9 @@ GRAY='\033[0;37m'
 YELLOW='\033[1;33m'
 PINK='\033[1;35m'
 NC='\033[0m'
+
+#CLASS VAR
+total_exported=0
 
 ####FUNCTIONS####
 
@@ -59,7 +63,11 @@ function tryCopyLangFilesAndroid {
     exit 1
   fi
 
-  cd $UNZIP_PATH; cd *; cd "res"
+  # cd $UNZIP_PATH
+  cd $UNZIP_PATH
+  cd $(find . -type d -name "*xml-archive")
+  cd "res"
+
   exportedStringsFile=$targetLang"/strings.xml"
   #check if exported lang file exists and OUTPUT_PATH is set
   if [ ! -z $OUTPUT_PATH ]; then
@@ -70,8 +78,14 @@ function tryCopyLangFilesAndroid {
       mkdir $targetLangDir
       echo -e "No ${targetLang} folder, created a new one."
     fi
-    cp $exportedStringsFile $targetLangFile
-    echo -e "${PINK}${targetLang} updated from localise.biz!\n"
+
+    if [ -e $targetLangFile ]; then
+      cp $exportedStringsFile $targetLangFile
+      echo -e "${PINK}${targetLang} updated from localise.biz!\n"
+      let "total_exported++"
+    else
+      echo -e "${RED}Error! strings.xml not found!"
+    fi
   fi
 }
 
@@ -196,7 +210,6 @@ for i in "${MAPS[@]}"; do
   IFS='=' read -ra mapKV <<< "$i"
   if [ ! -z ${mapKV[0]} ] || [ ! -z ${mapKV[0]} ]; then
     echo -e "${YELLOW}** Copying files from ${mapKV[0]} to ${mapKV[1]}...${NC}"
-    echo $PLATFORM
     if [[ $PLATFORM == "ios" ]]; then
       tryCopyLangFilesiOS ${mapKV[0]} ${mapKV[1]}
     elif [[ $PLATFORM == "android" ]]; then
@@ -207,6 +220,8 @@ done
 
 #cleanUp
 
-echo -e "${GREEN}Export FINISH!! "
+if [ $total_exported > 0 ]; then
+  echo -e "${GREEN}Export FINISH!! Total exported languages: ${total_exported}"
+fi
 
 exit 0
