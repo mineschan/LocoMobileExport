@@ -69,4 +69,5 @@ Option | Explanation
 {Platform} | `ios` or `android`
 --key | Provide the project API Key from localise.biz
 --output | Specific the path of where the `.lproj` folder is e.g. `--output "$PROJECT_DIR/MyApp"`
---map | How the language name map from localise export and project lang code, e.g. `en_US` on localise.biz, `en.lproj` in the xcode project, can be map with `--map 'en_US=en'`, can map as many as you want to meet your project setup.
+--map (iOS) | `en_US` on localise.biz exports, `en.lproj` in the xcode project, use `--map 'en_US=en'`, can map as many as you want to meet your project setup.
+--map (Android) | `en_US` on localise.biz exports, `values` in the xcode project, use `--map 'en_US=values'`, can map as many as you want to meet your project setup.
