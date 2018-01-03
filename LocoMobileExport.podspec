@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LocoMobileExport'
-  s.version          = '0.1.4'
+  s.version          = '0.1.6'
   s.summary          = 'An exporter script for Localise.biz projects for iOS and Android projects'
 
 # This description is used to generate tags and improve search results.
