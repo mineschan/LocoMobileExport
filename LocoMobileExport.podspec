@@ -24,14 +24,17 @@ An exporter script for Localise.biz projects for iOS and Android projects
   s.homepage         = 'https://github.com/mineschan/LocoMobileExport'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'mineschan' => 'mines@digisalad.cool' }
-  s.source           = { :git => 'https://github.com/mineschan/LocoMobileExport.git', :branch => 'master' }
+  s.author           = { 'MineS Chan' => 'mineschan@gmail.com' }
+  # s.source           = { :git => 'https://github.com/mineschan/LocoMobileExport.git', :branch => 'master' }
+  s.source           = { http: "https://github.com/mineschan/LocoMobileExport/archive/#{s.version}.zip" }
+  s.preserve_paths   = '*'
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'Sources', '*'
-
+  # s.source_files = 'Sources/*.{sh}'
+  # s.resource_bundles = {
+  # }
   # s.resource_bundles = {
   #   'LocoMobileExport' => ['LocoMobileExport/Assets/*.png']
   # }
