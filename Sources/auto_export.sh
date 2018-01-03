@@ -79,13 +79,9 @@ function tryCopyLangFilesAndroid {
       echo -e "No ${targetLang} folder, created a new one."
     fi
 
-    if [ -e $targetLangFile ]; then
-      cp $exportedStringsFile $targetLangFile
-      echo -e "${PINK}${targetLang} updated from localise.biz!\n"
-      let "total_exported++"
-    else
-      echo -e "${RED}Error! strings.xml not found!"
-    fi
+    cp $exportedStringsFile $targetLangFile
+    echo -e "${PINK}${targetLang} updated from localise.biz!\n"
+    let "total_exported++"
   fi
 }
 
