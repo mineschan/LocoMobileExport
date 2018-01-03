@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LocoMobileExport'
-  s.version          = '0.1.0'
+  s.version          = '0.1.3'
   s.summary          = 'An exporter script for Localise.biz projects for iOS and Android projects'
 
 # This description is used to generate tags and improve search results.
@@ -28,6 +28,8 @@ An exporter script for Localise.biz projects for iOS and Android projects
   # s.source           = { :git => 'https://github.com/mineschan/LocoMobileExport.git', :branch => 'master' }
   s.source           = { http: "https://github.com/mineschan/LocoMobileExport/archive/#{s.version}.zip" }
   s.preserve_paths   = '*'
+  s.exclude_files    = '**/file.zip'
+
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
