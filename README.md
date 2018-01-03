@@ -7,20 +7,24 @@ An exporter script for Localise.biz projects for iOS and Android projects
 
 ## How to use it?
 
-### iOS
+### iOS via CocoaPods
+
+Add this to your Podfile, then run ```pod install```
+
+```pod 'LocoMobileExport'```
 
 To integrate automatic update the .strings files when you build the project everytime, please follow below
  steps:
- 
+
 1. Go to `YOUR TARGET` -> `Build Settings`, add an `User Defined Settings`
 2. Set key to `LOCO_API_KEY` and paste in the API Key value from your Localise.biz project.
 3. Navigate to `Build Phases`, add a run script.
 
 ```bash
-SCRIPT="PATH_TO_THE_SCRIPT"
+SCRIPT=$PODS_ROOT/LocoMobileExport/Sources/auto_export.sh
 
 #Need to config the options, see below
-$SCRIPT ios --key $LOCO_API_KEY --map 'en=en' --map 'zh=zh-Hant' --output "$PROJECT_DIR/PROJECT_DIR"
+$SCRIPT ios --key $LOCO_API_KEY --map 'en=en' --map 'zh=zh-Hant' --output "$PROJECT_DIR/{path_to_lproj_dir}}"
 ```
 
 ## Options
@@ -39,4 +43,4 @@ Option | Explanation
 
 ### Android
 
-
+```TODO```
