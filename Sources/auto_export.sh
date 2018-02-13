@@ -215,6 +215,7 @@ for i in "${MAPS[@]}"; do
 done
 
 #cleanUp
+cleanUp
 
 if [ $total_exported > 0 ]; then
   echo -e "${GREEN}Export FINISH!! Total exported languages: ${total_exported}"
