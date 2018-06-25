@@ -68,7 +68,7 @@ function tryCopyLangFilesAndroid {
   cd $(find . -type d -name "*xml-archive")
   cd "res"
 
-  exportedStringsFile=$targetLang"/strings.xml"
+  exportedStringsFile=$exportedLang"/strings.xml"
   #check if exported lang file exists and OUTPUT_PATH is set
   if [ ! -z $OUTPUT_PATH ]; then
     #then ensure the target lang dir exists and create it otherwise
