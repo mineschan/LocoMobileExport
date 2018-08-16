@@ -42,7 +42,7 @@ KEY=YOUR_API_KEY_HERE  #1)Change this
 SCRIPT=LocoMobileExport/Sources/auto_export.sh #2)..and this
 
 #3)..and the map arguments below
-$SCRIPT android --key $KEY --map "en_HK=values" --output "${PWD}/app/src/main/res"
+$SCRIPT android --key $KEY --map "values=en_HK" --output "${PWD}/app/src/main/res"
 ```
 
 5. Add these lines in your `Build.gradle`
@@ -70,4 +70,4 @@ Option | Explanation
 --key | Provide the project API Key from localise.biz
 --output | Specific the path of where the `.lproj` folder is e.g. `--output "$PROJECT_DIR/MyApp"`
 --map (iOS) | `en_US` on localise.biz exports, `en.lproj` in the xcode project, use `--map 'en_US=en'`, can map as many as you want to meet your project setup.
---map (Android) | `en_US` on localise.biz exports, `values` in the res directory, use `--map 'en_US=values'`, can map as many as you want to meet your project setup.
+--map (Android) | `en_US` on localise.biz exports, `values` in the res directory, use `--map 'values=en_US'`, can map as many as you want to meet your project setup.
