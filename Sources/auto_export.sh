@@ -4,6 +4,7 @@
 EXPORT_URL=https://localise.biz/api/export/archive/
 EXPORT_FORMAT=
 API_KEY=
+TAG=
 
 #default download directory
 DOWNLOAD_DIR=/tmp
@@ -74,6 +75,7 @@ function tryCopyLangFilesAndroid {
     #then ensure the target lang dir exists and create it otherwise
     targetLangDir=$OUTPUT_PATH"/"$targetLang
     targetLangFile=$targetLangDir"/strings.xml"
+
     if [ ! -d $targetLangDir ]; then
       mkdir $targetLangDir
       echo -e "No ${targetLang} folder, created a new one."
@@ -124,6 +126,10 @@ while getopts ":-:" opt; do
           val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
           API_KEY=$val
           ;;
+        tag)
+          val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+          TAG=$val
+          ;;
         output)
           val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
           echo -e "Output Path set to ${GRAY}${val}${NC}"
@@ -164,6 +170,13 @@ if [ -z $API_KEY ]; then
   exit 1
 fi
 
+#check for additional options
+
+if [ ! -z $TAG ]; then
+  echo -e "${GREEN}TAG set: ${TAG}"
+fi
+
+
 #check if tmp directory exists
 echo -e "${YELLOW}** Checking tmp directory...${NC}"
 
@@ -175,7 +188,12 @@ fi
 
 #make up the export api
 
-EXPORT_URL_FINAL="${EXPORT_URL}${EXPORT_FORMAT}?key=${API_KEY}"
+EXPORT_URL_FINAL="${EXPORT_URL}${EXPORT_FORMAT}?key=${API_KEY}&index=id&order=id"
+
+if [ ! -z $TAG ]; then
+  EXPORT_URL_FINAL="${EXPORT_URL_FINAL}&filter=${TAG}"
+fi
+
 DOWNLOAD_PATH_FINAL="${DOWNLOAD_DIR}/${DOWNLOAD_FILE_NAME}.zip"
 echo -e "Export URL: ${GRAY}$EXPORT_URL_FINAL${NC}"
 echo -e "Saving to: ${GRAY}$DOWNLOAD_PATH_FINAL${NC}"
