@@ -21,7 +21,7 @@ To integrate automatic update the .strings files when you build the project ever
 3. Navigate to `Build Phases`, add a run script.
 
 ```bash
-SCRIPT=$PODS_ROOT/LocoMobileExport/Sources/auto_export.sh
+SCRIPT=$PODS_ROOT/LocoMobileExport/Sources/loco_auto_export.sh
 
 #Need to config the options, see below
 $SCRIPT ios --key $LOCO_API_KEY --map 'en=en' --map 'zh=zh-Hant' --output "$PROJECT_DIR/{path_to_lproj_dir}}"
@@ -39,7 +39,7 @@ $SCRIPT ios --key $LOCO_API_KEY --map 'en=en' --map 'zh=zh-Hant' --output "$PROJ
 
 ```bash
 KEY=YOUR_API_KEY_HERE  #1)Change this
-SCRIPT=LocoMobileExport/Sources/auto_export.sh #2)..and this
+SCRIPT=LocoMobileExport/Sources/loco_auto_export.sh #2)..and this
 
 #3)..and the map arguments below
 $SCRIPT android --key $KEY --map "values=en_HK" --output "${PWD}/app/src/main/res"
