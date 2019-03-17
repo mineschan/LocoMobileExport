@@ -73,3 +73,4 @@ Option | Explanation
 --map (Android) | `en_US` on localise.biz exports, `values` in the res directory, use `--map 'en_US=values'`, can map as many as you want to meet your project setup.
 --tags (optional) | Coma separated Loco tags
 --plurals (optional) | `true` if resources should be exported as plural resource file
+--name (optional) | The name of the strings file. Default is `localizable`

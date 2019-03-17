@@ -13,6 +13,7 @@ DOWNLOAD_FILE_NAME=tmp_localise_export
 
 #execution options
 OUTPUT_PATH=
+NAME='Localizable'
 FORCE_COPY=false
 MAPS=()
 
@@ -56,9 +57,9 @@ function tryCopyLangFilesiOS {
     targetLangDir=$OUTPUT_PATH"/"$targetLang".lproj"
     targetLangFile=
     if [ $PLURALS == true ]; then
-      targetLangFile=$targetLangDir"/Localizable.stringsdict"
+      targetLangFile=$targetLangDir"/"$NAME".stringsdict"
     else
-      targetLangFile=$targetLangDir"/Localizable.strings"
+      targetLangFile=$targetLangDir"/"$NAME".strings"
     fi
 
     if [ ! -d $targetLangDir ]; then
@@ -157,6 +158,11 @@ while getopts ":-:" opt; do
           val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
           echo -e "Output Path set to ${GRAY}${val}${NC}"
           OUTPUT_PATH=$val
+          ;;
+        name)
+          val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+          echo -e "Name set to ${GRAY}${val}${NC}"
+          NAME=$val
           ;;
         force)
           FORCE_COPY=true
