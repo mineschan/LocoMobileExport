@@ -4,6 +4,8 @@
 EXPORT_URL=https://localise.biz/api/export/archive/
 EXPORT_FORMAT=
 API_KEY=
+TAG=
+PLURALS=false
 
 #default download directory
 DOWNLOAD_DIR=/tmp
@@ -11,6 +13,7 @@ DOWNLOAD_FILE_NAME=tmp_localise_export
 
 #execution options
 OUTPUT_PATH=
+NAME='Localizable'
 FORCE_COPY=false
 MAPS=()
 
@@ -39,12 +42,26 @@ function tryCopyLangFilesiOS {
   fi
 
   cd $UNZIP_PATH; cd *
-  exportedStringsFile=$exportedLang".lproj/Localizable.strings"
+  exportedStringsFile=
+  if [ $PLURALS == true ]; then
+    exportedStringsFile=$exportedLang".lproj/Localizable.stringsdict"
+  else
+    toConvertStringsFile=$exportedLang".lproj/Localizable.strings"
+    exportedStringsFile=$exportedLang".lproj/Fixed.strings"
+    iconv -f UTF-16BE -t UTF8 < $toConvertStringsFile > $exportedStringsFile
+  fi
+
   #check if exported lang file exists and OUTPUT_PATH is set
   if [ ! -z $OUTPUT_PATH ]; then
     #then ensure the target lang dir exists and create it otherwise
     targetLangDir=$OUTPUT_PATH"/"$targetLang".lproj"
-    targetLangFile=$targetLangDir"/Localizable.strings"
+    targetLangFile=
+    if [ $PLURALS == true ]; then
+      targetLangFile=$targetLangDir"/"$NAME".stringsdict"
+    else
+      targetLangFile=$targetLangDir"/"$NAME".strings"
+    fi
+
     if [ ! -d $targetLangDir ]; then
       mkdir $targetLangDir
       echo -e "No ${targetLang}.lproj folder, created a new one."
@@ -73,7 +90,16 @@ function tryCopyLangFilesAndroid {
   if [ ! -z $OUTPUT_PATH ]; then
     #then ensure the target lang dir exists and create it otherwise
     targetLangDir=$OUTPUT_PATH"/"$targetLang
-    targetLangFile=$targetLangDir"/strings.xml"
+    targetLangFile=
+
+    if [ $PLURALS == true ]; then
+      targetLangFile=$targetLangDir"/plurals.xml"
+    else
+      targetLangFile=$targetLangDir"/strings.xml"
+    fi
+
+    echo -e "Lang file: $targetLangFile"
+
     if [ ! -d $targetLangDir ]; then
       mkdir $targetLangDir
       echo -e "No ${targetLang} folder, created a new one."
@@ -98,14 +124,10 @@ PLATFORM=
 
 case $1 in
   [iI][oO][sS])
-    echo -e "${YELLOW}** Going to Export iOS...${NC}"
-    EXPORT_FORMAT="ios.zip"
     PLATFORM="ios"
     shift
     ;;
   android)
-    echo -e "${YELLOW}** Going to Android XML...${NC}"
-    EXPORT_FORMAT="xml.zip"
     PLATFORM="android"
     shift
     ;;
@@ -124,10 +146,23 @@ while getopts ":-:" opt; do
           val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
           API_KEY=$val
           ;;
+        tag)
+          val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+          TAG=$val
+          ;;
+        plurals)
+          val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+          PLURALS=true
+          ;;
         output)
           val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
           echo -e "Output Path set to ${GRAY}${val}${NC}"
           OUTPUT_PATH=$val
+          ;;
+        name)
+          val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+          echo -e "Name set to ${GRAY}${val}${NC}"
+          NAME=$val
           ;;
         force)
           FORCE_COPY=true
@@ -164,6 +199,13 @@ if [ -z $API_KEY ]; then
   exit 1
 fi
 
+#check for additional options
+
+if [ ! -z $TAG ]; then
+  echo -e "${GREEN}TAG set: ${TAG}"
+fi
+
+
 #check if tmp directory exists
 echo -e "${YELLOW}** Checking tmp directory...${NC}"
 
@@ -175,7 +217,29 @@ fi
 
 #make up the export api
 
-EXPORT_URL_FINAL="${EXPORT_URL}${EXPORT_FORMAT}?key=${API_KEY}"
+if [[ $PLATFORM == "ios" ]]; then
+  if [ $PLURALS == true ]; then
+    EXPORT_FORMAT="stringsdict.zip"
+    echo -e "${YELLOW}** Going to Export iOS PLURALS...${NC}"
+  else
+    EXPORT_FORMAT="strings.zip"
+    echo -e "${YELLOW}** Going to Export iOS...${NC}"
+  fi
+elif [[ $PLATFORM == "android" ]]; then
+  EXPORT_FORMAT="xml.zip"
+  if [ $PLURALS == true ]; then
+    echo -e "${YELLOW}** Going to Export Android XML PLURALS...${NC}"
+  else
+    echo -e "${YELLOW}** Going to Android XML...${NC}"
+  fi
+fi
+
+EXPORT_URL_FINAL="${EXPORT_URL}${EXPORT_FORMAT}?key=${API_KEY}&index=id&order=id"
+
+if [ ! -z $TAG ]; then
+  EXPORT_URL_FINAL="${EXPORT_URL_FINAL}&filter=${TAG}"
+fi
+
 DOWNLOAD_PATH_FINAL="${DOWNLOAD_DIR}/${DOWNLOAD_FILE_NAME}.zip"
 echo -e "Export URL: ${GRAY}$EXPORT_URL_FINAL${NC}"
 echo -e "Saving to: ${GRAY}$DOWNLOAD_PATH_FINAL${NC}"
